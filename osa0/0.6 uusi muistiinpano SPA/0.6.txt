@@ -1,0 +1,6 @@
+title Adding a note in SPA
+note left of Browser: get form, submit, prevent default, add note to table, push to browser
+Browser->Server: POST note
+note right of Server: data in JSON format with content and timestamp
+Server->Browser: Return 201 created
+note right of Server: post to table for other users to see

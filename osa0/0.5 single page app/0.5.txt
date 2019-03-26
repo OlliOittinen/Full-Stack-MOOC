@@ -1,0 +1,9 @@
+title Going to a single page app
+Browser->Server: GET HTML
+Server->Browser: return 200 = deliver HTML
+Browser->Server: GET CSS
+Server->Browser: return CSS
+Browser->Server: GET JS
+Server->Browser: return JS
+Browser->Server: GET JSON
+Server->Browser: return JSON
