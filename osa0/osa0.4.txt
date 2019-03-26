@@ -1,0 +1,13 @@
+title Adding a note for example app
+Browser->Server: POST note
+note over Server: push new note to table
+Server->Browser: return 302; redirect
+note right of Browser: most of this stuff is just reloading the page
+Browser->Server: GET notes content
+Server->Browser: return notes
+Browser->Server: GET CSS content
+Server->Browser: return CSS
+Browser->Server: GET JS
+Server->Browser: return JS
+Browser->Server: GET JSON content
+Server->Browser: return JSON
