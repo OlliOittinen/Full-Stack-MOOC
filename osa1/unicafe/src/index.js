@@ -1,25 +1,34 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Statistics = ({good, neutral, bad, allClicks}) => {
+const Statistics = ({good, bad, neutral, allClicks}) => {
     if (allClicks.length===0) {
         return <div>
-            <h1>Statistiikka</h1>
             <p>Ei yhtään palautetta annettu</p>
             </div>
     }
     return ( 
         <div>
-        <h1>Statistiikka</h1>
-        <p>hyvä {good}</p>
-        <p>neutraali {neutral}</p>
-        <p>huono {bad}</p>
-        <p>yhteensä {allClicks.length}</p>
-        <p>keskiarvo {(getSum(allClicks)/allClicks.length)}</p>
-        <p>positiivisia {((good/allClicks.length)*100)} %</p>
+        <Statistic text="hyvä" value={good} />
+        <Statistic text="neutral" value= {neutral} />    
+        <Statistic text="bad" value= {bad} />
+        <Statistic text="yhteensä" value= {allClicks.length} />
+        <Statistic text="keskiarvo" value= {(getSum(allClicks)/allClicks.length)} />
+        <Statistic text="positiivisia" value= {((good/allClicks.length)*100)} />
+
         </div>
     )
 }
+
+const Statistic = ({text, value}) => {
+return <p>{text} {value}</p>
+}
+
+const Button = ({ handleClick, text }) => (
+    <button onClick={handleClick}>
+      {text}
+    </button>
+  )
 
 function getSum(array) {
     let sum=0
@@ -50,10 +59,11 @@ const App = () => {
   return (
     <div>
     <h1>anna palautetta</h1>
-      <button onClick={handleGoodClick}>hyvä</button>
-      <button onClick={handleNeutralClick}>neutraali</button>
-      <button onClick={handleBadClick}>huono</button>
-        <Statistics good={good} neutral={neutral} bad={bad} allClicks={allClicks} />
+        <Button handleClick={handleGoodClick} text='hyvä' />
+        <Button handleClick={handleNeutralClick} text='neutraali' />
+        <Button handleClick={handleBadClick} text='huono' />
+      <h1>Statistiikka</h1>
+        <Statistics good={good} bad={bad} neutral={neutral} allClicks={allClicks} />
     </div>
   )
 }
