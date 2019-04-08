@@ -1,6 +1,32 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Statistics = ({good, neutral, bad, allClicks}) => {
+    if (allClicks.length===0) {
+        return <div>
+            <h1>Statistiikka</h1>
+            <p>Ei yhtään palautetta annettu</p>
+            </div>
+    }
+    return ( 
+        <div>
+        <h1>Statistiikka</h1>
+        <p>hyvä {good}</p>
+        <p>neutraali {neutral}</p>
+        <p>huono {bad}</p>
+        <p>yhteensä {allClicks.length}</p>
+        <p>keskiarvo {(getSum(allClicks)/allClicks.length)}</p>
+        <p>positiivisia {((good/allClicks.length)*100)} %</p>
+        </div>
+    )
+}
+
+function getSum(array) {
+    let sum=0
+    for (let i=0; i<array.length; sum += array[i++]);
+    return sum
+}
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -21,27 +47,13 @@ const App = () => {
         setBad(bad+1)
     }
 
-    function getSum() {
-        let sum=0
-        for (let i=0; i<allClicks.length; sum += allClicks[i++]);
-        return sum/allClicks.length
-    }
-
   return (
     <div>
     <h1>anna palautetta</h1>
       <button onClick={handleGoodClick}>hyvä</button>
       <button onClick={handleNeutralClick}>neutraali</button>
       <button onClick={handleBadClick}>huono</button>
-
-    <h1>statistiikka</h1>
-    <p>hyvä {good}</p>
-    <p>neutraali {neutral}</p>
-    <p>huono {bad}</p>
-
-    <p>yhteensä {allClicks.length-1}</p>
-    <p>keskiarvo {getSum()}</p>
-    <p>positiivisia {(good/allClicks.length)*100}%</p>
+        <Statistics good={good} neutral={neutral} bad={bad} allClicks={allClicks} />
     </div>
   )
 }
