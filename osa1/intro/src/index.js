@@ -1,36 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Hello = (props) => {
-    return (
-      <div>
-        <p>
-          Hello {props.name}, you are {props.age} years old
-        </p>
-      </div>
-    )
-  }
+const Hello = ({ name, age }) => {
+  const bornYear = () => new Date().getFullYear() - age
 
-  const Footer = () => {
-    return (
-      <div>
-        greeting app created by 
+  return (
+    <div>
+      <p>Hello {name}, you are {age} years old</p>
+      <p>So you were probably born {bornYear()}</p>
+    </div>
+  )
+}
+
+const Footer = () => {
+  return (
+    <div>
+      greeting app created by
         <a href="https://github.com/OlliOittinen"> Olli Oittinen</a>
-      </div>
-    )
-  } 
-  const App = () => {
-    const name = 'Pekka'
-    const age = 10
-  
-    return (
-      <>
-        <h1>Greetings</h1>
-        <Hello name="Arto" age={26 + 10} />
-        <Hello name={name} age={age} />
-        <Footer />
-      </>
-    )
-  }
+    </div>
+  )
+}
+const App = () => {
+  const [counter, setCounter] = useState(0)
+
+  const setToValue = (value) => () => setCounter(value)
+
+/*   setTimeout(
+    () => setCounter(counter + 1),
+    1000
+  ) */
+
+  return (
+    <div>
+      <Hello name={'pekka'} age={10} />
+      <Footer />
+      {counter}
+      <button onClick={setToValue(counter + 1)}>
+      plus
+      </button>
+      <button onClick={setToValue(0)}>
+        zero
+      </button>
+    </div>
+  )
+}
+
 
 ReactDOM.render(<App />, document.getElementById('root'))
