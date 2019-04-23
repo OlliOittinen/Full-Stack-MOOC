@@ -1,31 +1,36 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = (props) => {
-    return ( 
-    <h1>{props.course.name}</h1>
-    )
-}
-const Content = (props) => {
+const Course = ({ course }) => {
     return (
         <div>
-            <Part part={props.parts[0]} />
-            <Part part={props.parts[1]} />
-            <Part part={props.parts[2]} />
+            <Header header={course.name} />
+            <Content content={course.parts} />
         </div>
     )
 }
 
-const Part = (props) => {
+const Header = ({ header }) => {
     return (
-        <p>{props.part.name}, {props.part.exercises}</p>
+        <h1>{header}</h1>
+    )
+}
+const Content = ({ content }) => {
+    return (
+        content.map(part => <Part key={part.name} part={part} />)
+        )
+}
+
+const Part = ({ part }) => {
+    return (
+        <p>{part.name} {part.exercises}</p>
     )
 }
 
 const Total = (props) => {
     let sum = 0
-    for(let i=0; i < props.parts.length; i++) {
-        sum +=props.parts[i].exercises
+    for (let i = 0; i < props.parts.length; i++) {
+        sum += props.parts[i].exercises
     }
     return (
         <p>{sum}</p>
@@ -36,27 +41,27 @@ const App = () => {
     const course = {
         name: 'Half Stack -sovelluskehitys',
         parts: [
-          {
-            name: 'Reactin perusteet',
-            exercises: 10
-          },
-          {
-            name: 'Tiedonvälitys propseilla',
-            exercises: 7
-          },
-          {
-            name: 'Komponenttien tila',
-            exercises: 14
-          }
+            {
+                name: 'Reactin perusteet',
+                exercises: 10
+            },
+            {
+                name: 'Tiedonvälitys propseilla',
+                exercises: 7
+            },
+            {
+                name: 'Komponenttien tila',
+                exercises: 14
+            },
+            {
+                name: 'Redux',
+                exercises: 7
+            }
         ]
-      }
+    }
 
     return (
-        <div>
-            <Header course={course} />
-            <Content parts={course.parts} />
-            <Total parts={course.parts} />
-        </div>
+        <Course course={course} />
     )
 }
 
