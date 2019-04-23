@@ -1,65 +1,45 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import App from './App'
 
-const Course = ({ course }) => {
-    return (
-        <div>
-            <Header header={course.name} />
-            <Content content={course.parts} />
-            <Total parts={course.parts} />
-        </div>
-    )
-}
-
-const Header = ({ header }) => {
-    return (
-        <h1>{header}</h1>
-    )
-}
-const Content = ({ content }) => {
-    return (
-        content.map(part => <Part key={part.name} part={part} />)
-        )
-}
-
-const Part = ({ part }) => {
-    return (
-        <p>{part.name} {part.exercises}</p>
-    )
-}
-
-const Total = ({parts}) => {
-    return (
-        parts.reduce( (sum, part) => sum + part.exercises, 0)
-    )
-}
-
-const App = () => {
-    const course = {
+const courses = [
+    {
         name: 'Half Stack -sovelluskehitys',
+        id: 1,
         parts: [
             {
                 name: 'Reactin perusteet',
-                exercises: 10
+                exercises: 10,
+                id: 1
             },
             {
                 name: 'Tiedonvälitys propseilla',
-                exercises: 7
+                exercises: 7,
+                id: 2
             },
             {
                 name: 'Komponenttien tila',
-                exercises: 14
+                exercises: 14,
+                id: 3
+            }
+        ]
+    },
+    {
+        name: 'Node.js',
+        id: 2,
+        parts: [
+            {
+                name: 'Routing',
+                exercises: 3,
+                id: 1
             },
             {
-                name: 'Redux',
-                exercises: 7
+                name: 'Middlewaret',
+                exercises: 7,
+                id: 2
             }
         ]
     }
+]
 
-    return (
-        <Course course={course} />
-    )
-}
-
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App courses={courses} />, document.getElementById('root'))
