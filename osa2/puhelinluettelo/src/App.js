@@ -2,16 +2,23 @@ import React, { useState } from 'react'
 
 const App = () => {
     const [persons, setPersons] = useState([
-        { name: 'Arto Hellas' }
-    ])
+        { name: 'Arto Hellas', number: '040-123456' },
+        { name: 'Martti Tienari', number: '040-123456' },
+        { name: 'Arto Järvinen', number: '040-123456' },
+        { name: 'Lea Kutvonen', number: '040-123456' }])
 
     const people = () => persons.map(person =>
-        <p key={person.name}>{person.name}</p>)
+        <ul key={person.name}>{person.name} {person.number}</ul>)
 
     const [newName, setNewName] = useState('')
+    const [newNumber, setNewNumber] = useState('')
 
     const handleNameChange = (event) => {
         setNewName(event.target.value)
+    }
+
+    const handleNumberChange = (event) => {
+        setNewNumber(event.target.value)
     }
 
     const addName = (event) => {
@@ -24,12 +31,14 @@ const App = () => {
         else {
             const nameObject = {
                 name: newName,
+                number: newNumber,
                 date: new Date().toISOString(),
                 id: persons.length + 1
             }
 
             setPersons(persons.concat(nameObject))
             setNewName('')
+            setNewNumber('')
         }
     }
 
@@ -41,6 +50,10 @@ const App = () => {
                     nimi: <input
                         value={newName}
                         onChange={handleNameChange}
+                    />
+                    numero: <input
+                        value={newNumber}
+                        onChange={handleNumberChange}
                     />
                 </div>
                 <div>
