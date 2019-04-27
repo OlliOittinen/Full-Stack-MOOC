@@ -63,7 +63,7 @@ const App = () => {
         }
     }
 
-    const rows = () => persons.map(person =>
+    const rows = (people) => people.map(person =>
         <Person
             key={person.id}
             person={person}
@@ -134,6 +134,9 @@ const App = () => {
         )
     }
 
+    const personsToShow = newSearch.length === 0
+        ? persons
+        : persons.filter(p => p.name.toLowerCase().includes(newSearch.toLowerCase()))
 
     return (
         <div>
@@ -142,7 +145,6 @@ const App = () => {
 
             <Filter
                 key='filter'
-                persons={persons}
                 handleSearchChange={handleSearchChange}
                 newSearch={newSearch}
             />
@@ -156,7 +158,7 @@ const App = () => {
                 handleNumberChange={handleNumberChange}
             />
             <h2>Numerot</h2>
-            {rows()}
+            {rows(personsToShow)}
         </div>
     )
 
