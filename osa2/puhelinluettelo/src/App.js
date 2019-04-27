@@ -112,8 +112,12 @@ const App = () => {
             })
             
             .catch(error => {
-                alert(`Numero '${number}' on jo valitettavasti poistettu palvelimelta`
+                setErrorMessage(
+                    `Henkilö '${number.name}' oli jo poistettu!`
                 )
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 5000)              
                 setPersons(persons.filter(n => n.number !== number.number))
             })
     }
