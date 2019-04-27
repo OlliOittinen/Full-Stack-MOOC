@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
@@ -10,16 +10,13 @@ const App = () => {
     const [newNumber, setNewNumber] = useState('')
     const [newSearch, setNewSearch] = useState('')
 
-    const hook = () => {
-        console.log('effect')
-        axios
-            .get('http://localhost:3001/persons')
-            .then(response => {
-                console.log('promise fulfilled')
-                setPersons(response.data)
+    useEffect(() => {
+        personService
+            .getAll()
+            .then(initialPersons => {
+                setPersons(initialPersons)
             })
-    }
-    useEffect(hook, [])
+    }, [])
 
     const handleNameChange = (event) => {
         setNewName(event.target.value)
@@ -48,12 +45,16 @@ const App = () => {
                 name: newName,
                 number: newNumber,
                 date: new Date().toISOString(),
-                id: persons.length + 1
             }
 
-            setPersons(persons.concat(nameObject))
-            setNewName('')
-            setNewNumber('')
+            personService
+                .create(nameObject)
+                .then(returnedPerson => {
+                    setPersons(persons.concat(returnedPerson))
+                    setNewName('')
+                    setNewNumber('')
+
+                })
         }
     }
 
