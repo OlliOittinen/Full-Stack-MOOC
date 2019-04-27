@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import personService from './services/persons'
 import PersonForm from './components/PersonForm'
-import Persons from './components/Persons'
+import Person from './components/Person'
 import Filter from './components/Filter'
 
 const App = () => {
@@ -26,10 +26,10 @@ const App = () => {
         setNewNumber(event.target.value)
     }
 
+    //doesn't work, does nothing atm
     const handleSearchChange = (event) => {
         setNewSearch(event.target.value)
         persons.filter(person => person.name.toLowerCase() !== -1)
-
         persons.map(person =>
             <ul key={person.name}>{person.name} {person.number}</ul>)
     }
@@ -38,7 +38,10 @@ const App = () => {
         event.preventDefault()
 
         if ((persons.map(person => person.name)).includes(newName)) {
-            alert(`${newName} on jo luettelossa`)
+            if (window.confirm(`${newName} on jo luettelossa, muutetaanko numero?`)) {
+                /*                 const TBC = persons.find(person => person.id === id)
+                                updateNumber(TBC.id) */
+            }
         }
         else {
             const nameObject = {
@@ -57,6 +60,40 @@ const App = () => {
                 })
         }
     }
+
+    const rows = () => persons.map(person =>
+        <Person
+            key={person.id}
+            person={person}
+            remove={() => removeName(person.id)}
+        />
+    )
+
+    const removeName = id => {
+        const person = persons.find(n => n.id === id)
+
+        if (window.confirm(`Poistetaanko ${person.name}?`)) {
+        personService
+            .remove(person.id)
+                .then(setPersons(persons.filter(n => n.id !== id)))
+        }
+    }
+    /* 
+        const updateNumber = id => {
+            const number = persons.find(n => n.id === id)
+            const changedNumber = { ...id, number: { handleNumberChange } }
+    
+            personService
+                .update(id, changedNumber)
+                .then(returnedPerson => {
+                    setPersons(persons.map(person => person.number !== number ? person : returnedPerson))
+                })
+                .catch(error => {
+                    alert(`Numero '${number}' on jo valitettavasti poistettu palvelimelta`
+                    )
+                })
+            setPersons(persons.filter(n => n.id !== id))
+        } */
 
     return (
         <div>
@@ -77,10 +114,7 @@ const App = () => {
                 handleNumberChange={handleNumberChange}
             />
             <h2>Numerot</h2>
-            <Persons
-                key={Persons}
-                persons={persons}
-            />
+            {rows()}
         </div>
     )
 
