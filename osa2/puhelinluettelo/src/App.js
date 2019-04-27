@@ -39,16 +39,11 @@ const App = () => {
 
         if ((persons.map(person => person.name)).includes(newName)) {
             if (window.confirm(`${newName} on jo luettelossa, muutetaanko numero?`)) {
-                /*                 const TBC = persons.find(person => person.id === id)
-                                updateNumber(TBC.id) */
+                updateNumber()
             }
         }
         else {
-            const nameObject = {
-                name: newName,
-                number: newNumber,
-                date: new Date().toISOString(),
-            }
+            const nameObject = createNameObject()
 
             personService
                 .create(nameObject)
@@ -73,27 +68,35 @@ const App = () => {
         const person = persons.find(n => n.id === id)
 
         if (window.confirm(`Poistetaanko ${person.name}?`)) {
-        personService
-            .remove(person.id)
+            personService
+                .remove(person.id)
                 .then(setPersons(persons.filter(n => n.id !== id)))
         }
     }
-    /* 
-        const updateNumber = id => {
-            const number = persons.find(n => n.id === id)
-            const changedNumber = { ...id, number: { handleNumberChange } }
-    
-            personService
-                .update(id, changedNumber)
-                .then(returnedPerson => {
-                    setPersons(persons.map(person => person.number !== number ? person : returnedPerson))
-                })
-                .catch(error => {
-                    alert(`Numero '${number}' on jo valitettavasti poistettu palvelimelta`
-                    )
-                })
-            setPersons(persons.filter(n => n.id !== id))
-        } */
+
+    const createNameObject = () => {
+        return ({
+            name: newName,
+            number: newNumber,
+            date: new Date().toISOString(),
+        })
+    }
+
+    const updateNumber = () => {
+        const number = persons.find(n => n.name === newName)
+        const changedNumber = { ...number, number: newNumber }
+
+        personService
+            .update(number.id, changedNumber)
+            .then(returnedPerson => {
+                setPersons(persons.map(person => person.number !== number.number ? person : returnedPerson))
+            })
+            .catch(error => {
+                alert(`Numero '${number}' on jo valitettavasti poistettu palvelimelta`
+                )
+                setPersons(persons.filter(n => n.number !== number.number))
+            })
+    }
 
     return (
         <div>
