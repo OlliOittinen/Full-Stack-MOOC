@@ -9,6 +9,7 @@ const App = () => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [newSearch, setNewSearch] = useState('')
+    const [errorMessage, setErrorMessage] = useState(null)
 
     useEffect(() => {
         personService
@@ -49,10 +50,16 @@ const App = () => {
                 .create(nameObject)
                 .then(returnedPerson => {
                     setPersons(persons.concat(returnedPerson))
+                    setErrorMessage(
+                        `Henkilö '${nameObject.name}' lisätty!`
+                    )
+                    setTimeout(() => {
+                        setErrorMessage(null)
+                    }, 5000)
                     setNewName('')
                     setNewNumber('')
-
                 })
+
         }
     }
 
@@ -71,6 +78,12 @@ const App = () => {
             personService
                 .remove(person.id)
                 .then(setPersons(persons.filter(n => n.id !== id)))
+            setErrorMessage(
+                `Henkilö '${person.name}' poistettu!`
+            )
+            setTimeout(() => {
+                setErrorMessage(null)
+            }, 5000)
         }
     }
 
@@ -89,8 +102,15 @@ const App = () => {
         personService
             .update(number.id, changedNumber)
             .then(returnedPerson => {
-                setPersons(persons.map(person => person.number !== number.number ? person : returnedPerson))
+                setPersons(persons.map(person => person.id === number.id ? returnedPerson : person))
+                setErrorMessage(
+                    `Henkilön '${number.name}' numeroa muokattu!`
+                )
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 5000)
             })
+            
             .catch(error => {
                 alert(`Numero '${number}' on jo valitettavasti poistettu palvelimelta`
                 )
@@ -98,9 +118,24 @@ const App = () => {
             })
     }
 
+    const Notification = ({ message }) => {
+        if (message === null) {
+            return null
+        }
+
+        return (
+            <div className="error">
+                {message}
+            </div>
+        )
+    }
+
+
     return (
         <div>
             <h2>Puhelinluettelo</h2>
+            <Notification message={errorMessage} />
+
             <Filter
                 key='filter'
                 persons={persons}
