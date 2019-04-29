@@ -27,18 +27,18 @@ let persons = [
 
 app.use(bodyParser.json())
 
-app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>')
+app.get('/', (request, response) => {
+    response.send('<h1>Hello World!</h1>')
 })
 
-app.get('/api/persons', (req, res) => {
-    res.json(persons)
+app.get('/api/persons', (request, response) => {
+    response.json(persons)
 })
 
-app.get('/info', (req, res) => {
+app.get('/info', (request, response) => {
     const message = 'Puhelinluettelossa ' + persons.length + ' henkilön tiedot<p>'+ new Date()+ '</p>'
 
-    res.send(message)
+    response.send(message)
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -57,6 +57,29 @@ app.delete('/api/persons/:id', (request, response) => {
 
     response.status(204).end();
 });
+
+const generateID = () => {
+    return Math.floor(Math.random()*1000)
+}
+
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'name missing'
+        })
+    }
+
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generateID(),
+    }
+
+    persons = persons.concat(person)
+
+    response.json(person)
+})
 
 const PORT = 3001
 
