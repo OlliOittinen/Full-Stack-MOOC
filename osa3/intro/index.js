@@ -1,8 +1,9 @@
-
+const cors = require('cors')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
+app.use(cors())
 let notes = [
     {
         id: 1,
@@ -73,23 +74,6 @@ app.post('/notes', (request, response) => {
 
 
 
-/*
-const requestLogger = (request, response, next) => {
-    console.log('Method:', request.method)
-    console.log('Path:  ', request.path)
-    console.log('Body:  ', request.body)
-    console.log('---')
-    next()
-}
-
-app.use(requestLogger)
-
-const unknownEndpoint = (request, response) => {
-    response.status(404).send({ error: 'unknown endpoint' })
-}
-
-app.use(unknownEndpoint)
-*/
 const generateId = () => {
     const maxId = notes.length > 0
         ? Math.max(...notes.map(n => n.id))
@@ -97,8 +81,7 @@ const generateId = () => {
     return maxId + 1
 }
 
-const PORT = 3001
-
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 }) 
