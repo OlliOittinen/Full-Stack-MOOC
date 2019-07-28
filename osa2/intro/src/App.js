@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import noteService from './services/notes'
+import Notification from './components/Notification'
+import Footer from './components/Footer'
 import Note from './components/Note'
 
 const App = () => {
@@ -11,8 +13,7 @@ const App = () => {
   useEffect(() => {
     noteService
       .getAll()
-      .then(initialNotes => {
-        setNotes(initialNotes)
+      .then(initialNotes => { setNotes(initialNotes)
       })
   }, [])
 
@@ -33,7 +34,8 @@ const App = () => {
     const noteObject = {
       content: newNote,
       date: new Date().toISOString(),
-      important: Math.random() > 0.5
+        important: Math.random() > 0.5,
+        id: notes.length + 1,
     }
 
     noteService
@@ -68,7 +70,7 @@ const App = () => {
     setNewNote(event.target.value)
   }
 
-  const Notification = ({ message }) => {
+/*   const Notification = ({ message }) => {
     if (message === null) {
       return null
     }
@@ -78,7 +80,7 @@ const App = () => {
         {message}
       </div>
     )
-  }
+  } */
 
   return (
     <div>
@@ -100,7 +102,8 @@ const App = () => {
           onChange={handleNoteChange}
         />
         <button type="submit">tallenna</button>
-      </form>
+          </form>
+          <Footer/>
     </div>
   )
 }
